@@ -97,13 +97,18 @@ public class dbOutPersona {
             System.out.println("Error: " + e.getMessage());
         }
     }
-    public static void dbregistrarPersona(String nombre, String apellido, Integer idciudad, String direccion,
-            Integer edad, String email, Integer idgenero) {
+    
+    public static void dbregistrarPersona(String nombre, String apellido, Integer idciudad, String direccion, Integer edad, String email, Integer idgenero) {
+        if (!existeCiudad(idciudad) || !existeGenero(idgenero)) {
+            System.out.println("Error: idciudad o idgenero no válido.");
+            return;
+        }
+    
         String sql = "INSERT INTO persons (name, lastname, idcity, address, age, email, idgender) VALUES (?,?,?,?,?,?,?)";
-
+    
         try (Connection conn = conexionDB.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
-
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+    
             ps.setString(1, nombre);
             ps.setString(2, apellido);
             ps.setInt(3, idciudad);
@@ -111,19 +116,52 @@ public class dbOutPersona {
             ps.setInt(5, edad);
             ps.setString(6, email);
             ps.setInt(7, idgenero);
-
+    
             int filasAfectadas = ps.executeUpdate();
-
+    
             if (filasAfectadas > 0) {
                 System.out.println("La persona se creó correctamente.");
             } else {
                 System.out.println("La persona no se creó correctamente.");
             }
-
+    
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
+    
+    private static boolean existeCiudad(int idciudad) {
+        String sql = "SELECT COUNT(*) FROM city WHERE id = ?";
+        try (Connection conn = conexionDB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idciudad);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    private static boolean existeGenero(int idgenero) {
+        String sql = "SELECT COUNT(*) FROM gender WHERE id = ?";
+        try (Connection conn = conexionDB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idgenero);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
 
     public static void dbasignarHabilidad(String fecha, Integer idPersona, Integer idHabilidad) {
         String checkPersonSql = "SELECT COUNT(*) FROM persons WHERE id = ?";

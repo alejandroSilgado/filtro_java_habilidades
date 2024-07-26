@@ -77,7 +77,7 @@ public class domainPersona {
 
     public static void actualizarPersona() {
         Scanner sc = new Scanner(System.in);
-
+        com.filtro_java.persona.Interface.dbOutPersona.dbimprimirPersona();
         System.out.println("Ingrese el ID de la persona: ");
         Integer id = sc.nextInt();
         sc.nextLine(); 
