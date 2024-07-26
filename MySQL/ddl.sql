@@ -2,11 +2,11 @@ CREATE DATABASE sgpzf;
 USE sgpzf;
 
 CREATE TABLE stack (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL
 );
 CREATE TABLE skill (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL
 );
 CREATE TABLE stack_skill(
@@ -40,7 +40,7 @@ CREATE TABLE city (
     FOREIGN KEY (idregion) REFERENCES region(id)
 );
 CREATE TABLE persons (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
     lastname VARCHAR(50) NOT NULL,
     idcity INT,
@@ -53,7 +53,7 @@ CREATE TABLE persons (
     FOREIGN KEY (idcity) REFERENCES city(id)
 );
 CREATE TABLE person_skill (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     registration_date DATE,
     idperson INT,
     idskill INT,
