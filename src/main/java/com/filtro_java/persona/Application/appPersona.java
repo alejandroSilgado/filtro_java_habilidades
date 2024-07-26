@@ -8,6 +8,7 @@ public class appPersona {
         boolean salir = false;
 
         while (!salir) {
+            limpiarPantalla();
             System.out.println(" ");
             System.out.println("╔═══════════════════════════════════════════════════════╗\r\n" + //
                                 "║                                                       ║\r\n" + //
@@ -68,5 +69,16 @@ public class appPersona {
             }
         }
         scanner.close();
+    }
+    public static void limpiarPantalla() {
+        try {
+            if (System.getProperty("os.name").toLowerCase().contains("win")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
